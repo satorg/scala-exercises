@@ -3,6 +3,7 @@ package satorg.collection
 import org.scalacheck.Gen
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{FreeSpec, Matchers}
+import satorg.collection.MergeOrderedIterator._
 
 
 class MergeOrderedIteratorTest extends FreeSpec with Matchers with GeneratorDrivenPropertyChecks {
@@ -13,8 +14,8 @@ class MergeOrderedIteratorTest extends FreeSpec with Matchers with GeneratorDriv
     forAll((listGen, "left"), (listGen, "right")) { (left, right) =>
       val expected = (left ::: right).sorted
 
-      val actual1 = new MergeOrderedIterator(left.iterator, right.iterator).toList
-      val actual2 = new MergeOrderedIterator(right.iterator, left.iterator).toList
+      val actual1 = mergeOrdered(left.iterator, right.iterator).toList
+      val actual2 = mergeOrdered(right.iterator, left.iterator).toList
 
       actual1 should contain theSameElementsInOrderAs expected
       actual2 should contain theSameElementsInOrderAs expected
