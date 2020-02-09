@@ -1,12 +1,12 @@
 package satorg.collection
 
 import org.scalacheck.Gen
-import org.scalatest.prop.GeneratorDrivenPropertyChecks
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
+import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import satorg.collection.MergeOrderedIterator._
 
-
-class MergeOrderedIteratorTest extends FreeSpec with Matchers with GeneratorDrivenPropertyChecks {
+class MergeOrderedIteratorTest extends AnyFreeSpec with Matchers with ScalaCheckDrivenPropertyChecks {
 
   "it should work correctly" in {
     def listGen = Gen.chooseNum(0, 10, 0, 1).flatMap(Gen.listOfN(_, Gen.choose(1, 10))).map(_.sorted)

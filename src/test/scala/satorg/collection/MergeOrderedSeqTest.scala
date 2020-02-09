@@ -1,10 +1,11 @@
 package satorg.collection
 
 import org.scalacheck.Gen
-import org.scalatest.prop.GeneratorDrivenPropertyChecks
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
+import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
-class MergeOrderedSeqTest extends FreeSpec with Matchers with GeneratorDrivenPropertyChecks {
+class MergeOrderedSeqTest extends AnyFreeSpec with Matchers with ScalaCheckDrivenPropertyChecks {
 
   import MergeOrderedSeq._
 
