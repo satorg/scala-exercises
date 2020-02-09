@@ -4,7 +4,6 @@ import org.scalacheck.Gen
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
-import satorg.collection.MergeOrderedIterator._
 
 class MergeOrderedIteratorTest extends AnyFreeSpec with Matchers with ScalaCheckDrivenPropertyChecks {
 
@@ -14,8 +13,8 @@ class MergeOrderedIteratorTest extends AnyFreeSpec with Matchers with ScalaCheck
     forAll((listGen, "left"), (listGen, "right")) { (left, right) =>
       val expected = (left ::: right).sorted
 
-      val actual1 = mergeOrdered(left.iterator, right.iterator).toList
-      val actual2 = mergeOrdered(right.iterator, left.iterator).toList
+      val actual1 = MergeOrderedIterator(left.iterator, right.iterator).toList
+      val actual2 = MergeOrderedIterator(right.iterator, left.iterator).toList
 
       actual1 should contain theSameElementsInOrderAs expected
       actual2 should contain theSameElementsInOrderAs expected
