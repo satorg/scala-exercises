@@ -4,16 +4,16 @@ import scala.annotation.tailrec
 
 object MergeOrderedSeq {
 
-  def mergeOrdered[A: Ordering](left: Stream[A], right: Stream[A]): Stream[A] = {
+  import Ordering.Implicits._
+
+  def mergeOrdered[A: Ordering](left: LazyList[A], right: LazyList[A]): LazyList[A] = {
 
     (left, right) match {
-      case (Stream.Empty, _) => right
-      case (_, Stream.Empty) => left
+      case _ if left.isEmpty => right
+      case _ if right.isEmpty => left
 
       case (leftHead #:: leftTail, rightHead #:: rightTail) =>
-        val ordering = implicitly[Ordering[A]]
-
-        if (ordering.lt(leftHead, rightHead)) {
+        if (leftHead < rightHead) {
           leftHead #:: mergeOrdered(leftTail, right)
         }
         else {
@@ -29,9 +29,7 @@ object MergeOrderedSeq {
       case (Nil, _) => right reverse_::: acc
       case (_, Nil) => left reverse_::: acc
       case (leftHead :: leftTail, rightHead :: rightTail) =>
-        val ordering = implicitly[Ordering[A]]
-
-        if (ordering.lt(leftHead, rightHead)) {
+        if (leftHead < rightHead) {
           mergeOrderedR(leftTail, right, leftHead :: acc)
         }
         else {
