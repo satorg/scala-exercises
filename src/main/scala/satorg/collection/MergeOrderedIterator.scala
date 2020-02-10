@@ -5,23 +5,8 @@ import scala.collection.AbstractIterator
 object MergeOrderedIterator {
 
   def apply[A: Ordering](first: Iterator[A], second: Iterator[A], others: Iterator[A]*): Iterator[A] = {
-    MergeOrderedIterator(Iterator(first, second) ++ others.iterator)
-  }
-
-  @scala.annotation.tailrec
-  private def apply[A: Ordering](iters: Iterator[Iterator[A]]): Iterator[A] = {
-    iters.take(2).toList match {
-      case Nil => Iterator.empty
-      case single :: Nil => single
-      case many =>
-        val mergeIters =
-          (many.iterator ++ iters).grouped(2).map {
-            case Seq(single) => single
-            case Seq(first, second) => new MergeOrderedIterator(first, second)
-          }
-
-        MergeOrderedIterator(mergeIters)
-    }
+    (Iterator(first, second) ++ others.iterator).
+      treeFold(Iterator.empty)(new MergeOrderedIterator(_, _))
   }
 }
 
